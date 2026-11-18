@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}{{ order }}{% endblock %}
+
+{% block content %}
+<h1>{{ order }}</h1>
+<p>Customer: {{ order.customer.username|default:"Guest" }}</p>
+<p>Status: {{ order.get_status_display }}</p>
+<p>Placed: {{ order.created_at|date:"M j, Y H:i" }}</p>
+
+{% if order.items.all %}
+<table>
+  <thead>
+    <tr>
+      <th>Product</th>
+      <th>Qty</th>
+      <th>Unit price</th>
+      <th>Line total</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for item in order.items.all %}
+    <tr>
+      <td><a href="{{ item.product.get_absolute_url }}">{{ item.product.name }}</a></td>
+      <td>{{ item.quantity }}</td>
+      <td>${{ item.unit_price }}</td>
+      <td>${{ item.line_total }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<p><strong>Total: ${{ order.total }}</strong></p>
+{% else %}
+<p>No items in this order.</p>
+{% endif %}
+
+<p><a href="{% url 'orders:order_list' %}">Back to orders</a></p>
+{% endblock %}

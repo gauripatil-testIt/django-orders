@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}New order{% endblock %}
+
+{% block content %}
+<h1>New order</h1>
+
+{% if form.fields.product.queryset.exists %}
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Place order</button>
+</form>
+{% else %}
+<p>No active products available. Add a product in the <a href="/admin/">admin</a> first.</p>
+{% endif %}
+
+<p><a href="{% url 'orders:order_list' %}">Back to orders</a></p>
+{% endblock %}

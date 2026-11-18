@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block title %}Orders{% endblock %}
+
+{% block content %}
+<h1>Orders</h1>
+<p><a href="{% url 'orders:order_create' %}">Place an order</a></p>
+
+{% if orders %}
+<ul>
+  {% for order in orders %}
+  <li>
+    <a href="{{ order.get_absolute_url }}">{{ order }}</a>
+    - {{ order.customer.username|default:"Guest" }}
+    - {{ order.get_status_display }}
+    - ${{ order.total }}
+  </li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>No orders yet.</p>
+{% endif %}
+{% endblock %}
